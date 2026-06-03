@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Từ chối truy cập";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center text-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 p-5 bg-white card-hover">
+                <div class="card-body">
+                    <div class="mb-4 text-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-shield-slash-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.093 3.093c-.465.42-.75.908-.75 1.564v4.353c0 2.237 1.354 4.107 3.42 5.082l.477-.478a8.96 8.96 0 0 1-.318-.363c-.156-.2-.311-.424-.46-.666C2.656 11.2 2 9.58 2 9.01V4.657c0-.28.1-.482.262-.629l-.736-.736L1.093 3.093zm3.176 3.177 1.636 1.636L10.364 4c-.58-.5-1.42-.8-2.364-.8-1.5 0-3 1-3.5 2V5.5c0 .265.04.512.113.742l-.844-.844a4.42 4.42 0 0 1 .536-2.305zm7.367 7.367 1.094 1.094a9.42 9.42 0 0 0 .85-2.022c.175-.688.273-1.428.273-2.128V4.657c0-.528-.15-1.01-.524-1.39l-1.047 1.048c.31.285.571.64.571 1.342v4.353c0 .324-.04.664-.12 1.004a7.96 7.96 0 0 1-.365 1.22c-.146.335-.333.663-.564.966a9.04 9.04 0 0 1-.678.736zM8 14.86c2.066-.975 3.42-2.845 3.42-5.082V9.01a8.96 8.96 0 0 1-.225 1.704l.951.951c.173-.522.274-1.085.274-1.655V4.657c0-.9-.37-1.755-1.025-2.285L8 14.86zM4.73 3.636l-.736-.736 10-10 .736.736L4.73 3.636z"/>
+                        </svg>
+                    </div>
+                    <h2 class="fw-bold text-dark mb-3">TỪ CHỐI TRUY CẬP</h2>
+                    <p class="text-muted mb-4 lead">
+                        Bạn không có quyền truy cập vào chức năng hoặc trang này. 
+                        Vui lòng kiểm tra lại quyền hạn của tài khoản hoặc đăng nhập với vai trò phù hợp.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 justify-content-center">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm">
+                            <i class="bi bi-house-door-fill me-2"></i>Về trang chủ
+                        </a>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-secondary px-4 py-2 rounded-3 fw-bold border-2">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

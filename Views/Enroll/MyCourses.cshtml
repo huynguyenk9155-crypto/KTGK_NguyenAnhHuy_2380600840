@@ -1,0 +1,121 @@
+@model IEnumerable<KTGK_LapTrinhWeb.Models.Enrollment>
+
+@{
+    ViewData["Title"] = "Học phần đã đăng ký - Học viên";
+}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-2">
+        <div>
+            <h2 class="fw-bold text-dark mb-0">Học phần của tôi</h2>
+            <p class="text-muted mb-0 small">Danh sách các học phần bạn đã đăng ký thành công</p>
+        </div>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary px-3 py-2 rounded-3 fw-bold border-2">
+            <i class="bi bi-plus-circle me-1"></i>Đăng ký thêm học phần
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card border-0 shadow-sm rounded-4 p-5 text-center my-5 bg-white">
+            <div class="card-body">
+                <div class="mb-4 text-warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-bookmark-x-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zM6.854 5.146a.5.5 0 1 0-.708.708L7.293 7 6.146 8.146a.5.5 0 1 0 .708.708L8 7.707l1.146 1.147a.5.5 0 1 0 .708-.708L8.707 7l1.147-1.146a.5.5 0 0 0-.708-.708L8 6.293 6.854 5.146z"/>
+                    </svg>
+                </div>
+                <h4 class="fw-bold text-dark">Bạn chưa đăng ký học phần nào</h4>
+                <p class="text-muted mb-4">Hãy khám phá các học phần có sẵn trên hệ thống và đăng ký ngay hôm nay.</p>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary px-4 py-2.5 rounded-3 fw-bold shadow-sm">
+                    Khám phá học phần
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Registered Courses Grid -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+            @foreach (var enrollment in Model)
+            {
+                var course = enrollment.Course;
+                if (course == null) continue;
+
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-hover d-flex flex-column">
+                        <!-- Course Image -->
+                        <div class="position-relative overflow-hidden" style="height: 160px;">
+                            @if (!string.IsNullOrEmpty(course.Image))
+                            {
+                                <img src="@course.Image" class="w-100 h-100 object-fit-cover" alt="@course.Name" onerror="this.onerror=null; this.src='/images/placeholder.jpg';" />
+                            }
+                            else
+                            {
+                                <div class="w-100 h-100 bg-gradient bg-secondary text-white d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-book-half" style="font-size: 2.5rem;"></i>
+                                </div>
+                            }
+                            <!-- Category Badge -->
+                            <span class="position-absolute top-0 end-0 bg-info text-white m-3 px-2.5 py-1 rounded-pill small fw-bold shadow-sm">
+                                @(course.Category?.Name ?? "Khác")
+                            </span>
+                        </div>
+
+                        <!-- Course Info -->
+                        <div class="card-body p-4 d-flex flex-column flex-grow-1">
+                            <h5 class="card-title fw-bold text-dark mb-2 text-line-clamp-2" style="min-height: 48px;">
+                                @course.Name
+                            </h5>
+                            
+                            <div class="text-muted small mb-3">
+                                <div class="d-flex align-items-center mb-1.5">
+                                    <i class="bi bi-person-badge-fill text-primary me-2"></i>
+                                    <span>Giảng viên: <strong class="text-dark">@course.Lecturer</strong></span>
+                                </div>
+                                <div class="d-flex align-items-center mb-1.5">
+                                    <i class="bi bi-journal-bookmark-fill text-success me-2"></i>
+                                    <span>Số tín chỉ: <strong class="text-dark">@course.Credits</strong> tín chỉ</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-calendar-event text-warning me-2"></i>
+                                    <span>Đã đăng ký: <strong class="text-dark">@enrollment.EnrollDate.ToString("dd/MM/yyyy HH:mm")</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer Action (Unenroll) -->
+                        <div class="card-footer bg-light p-3 border-0 border-top mt-auto">
+                            <form asp-controller="Enroll" asp-action="Unenroll" method="post">
+                                <input type="hidden" name="courseId" value="@course.Id" />
+                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                                <button type="submit" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-1 shadow-sm">
+                                    <i class="bi bi-x-circle-fill"></i> Hủy đăng ký
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <!-- Total Summary Information -->
+        <div class="card bg-light border-0 rounded-4 p-4 mt-4">
+            <div class="row align-items-center">
+                <div class="col-md-8 text-center text-md-start mb-3 mb-md-0">
+                    <h5 class="fw-bold text-dark mb-1">Tóm tắt học tập</h5>
+                    <p class="text-muted mb-0 small">Tổng hợp số lượng tín chỉ và số môn học đã đăng ký trong học kỳ.</p>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <div class="d-inline-block text-start me-4">
+                        <div class="small text-muted">Số môn học</div>
+                        <div class="h3 fw-bold text-primary mb-0">@Model.Count()</div>
+                    </div>
+                    <div class="d-inline-block text-start">
+                        <div class="small text-muted">Tổng số tín chỉ</div>
+                        <div class="h3 fw-bold text-success mb-0">@Model.Sum(e => e.Course?.Credits ?? 0)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

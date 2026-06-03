@@ -1,0 +1,76 @@
+@using KTGK_LapTrinhWeb.Models
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden card-hover">
+                <div class="card-header bg-gradient bg-primary text-white text-center py-4 border-0">
+                    <h3 class="fw-bold mb-0">ĐĂNG NHẬP HỆ THỐNG</h3>
+                    <p class="text-white-50 mb-0 mt-1 small">Chào mừng bạn quay trở lại với cổng học tập</p>
+                </div>
+                <div class="card-body p-4 p-md-5 bg-white">
+                    <form asp-action="Login" asp-route-returnUrl="@returnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 small border-0 py-2 mb-3" role="alert"></div>
+
+                        <!-- Username/Email -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Username" class="form-control rounded-3" id="floatingUsername" placeholder="Tên đăng nhập hoặc Email" required />
+                            <label asp-for="Username" for="floatingUsername"><i class="bi bi-person-fill text-muted me-2"></i>Tên đăng nhập hoặc Email</label>
+                            <span asp-validation-for="Username" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Password" class="form-control rounded-3" id="floatingPassword" placeholder="Mật khẩu" type="password" required />
+                            <label asp-for="Password" for="floatingPassword"><i class="bi bi-lock-fill text-muted me-2"></i>Mật khẩu</label>
+                            <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-check mb-4 text-start">
+                            <input asp-for="RememberMe" class="form-check-input" id="rememberMeCheck" />
+                            <label asp-for="RememberMe" class="form-check-label text-muted small" for="rememberMeCheck">
+                                Ghi nhớ đăng nhập trên thiết bị này
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold text-uppercase shadow-sm mb-3">
+                            Đăng nhập
+                        </button>
+                    </form>
+
+                    <!-- Google Authentication Separator -->
+                    <div class="d-flex align-items-center my-4">
+                        <hr class="flex-grow-1 text-muted opacity-25">
+                        <span class="mx-3 text-muted small text-uppercase">Hoặc sử dụng</span>
+                        <hr class="flex-grow-1 text-muted opacity-25">
+                    </div>
+
+                    <!-- Google Sign-In Button -->
+                    <a asp-action="GoogleLogin" asp-route-returnUrl="@returnUrl" class="btn btn-outline-danger w-100 py-3 rounded-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 border-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+                            <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0c2.244 0 4.179.827 5.68 2.233L11.83 4.09c-.73-.7-1.964-1.517-3.83-1.517-3.27 0-5.938 2.71-5.938 6.048 0 3.337 2.668 6.047 5.938 6.047 3.79 0 5.21-2.724 5.435-4.124H8.334V6.558z"/>
+                        </svg>
+                        Đăng nhập bằng Google
+                    </a>
+
+                    <div class="text-center mt-4 pt-2 border-top border-light">
+                        <span class="text-muted small">Chưa có tài khoản học viên?</span>
+                        <a asp-action="Register" class="text-decoration-none fw-bold ms-1 text-primary small">Đăng ký ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

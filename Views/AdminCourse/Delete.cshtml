@@ -1,0 +1,61 @@
+@model KTGK_LapTrinhWeb.Models.Course
+
+@{
+    ViewData["Title"] = "Xác nhận xóa học phần - Admin";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div class="card-header bg-danger text-white py-3 border-0 text-center">
+                    <h4 class="fw-bold mb-0 text-uppercase"><i class="bi bi-exclamation-triangle-fill me-2"></i>Cảnh báo Xóa học phần</h4>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <p class="text-center text-muted mb-4 lead small">
+                        Bạn có chắc chắn muốn xóa học phần này khỏi hệ thống? <br>
+                        <strong class="text-danger">Hành động này không thể hoàn tác!</strong>
+                    </p>
+
+                    <!-- Course Info Summary Card -->
+                    <div class="card bg-light border-0 rounded-3 p-3 mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            @if (!string.IsNullOrEmpty(Model.Image))
+                            {
+                                <img src="@Model.Image" class="rounded-3 object-fit-cover border shadow-sm" style="width: 80px; height: 60px;" alt="@Model.Name" onerror="this.onerror=null; this.src='/images/placeholder.jpg';" />
+                            }
+                            else
+                            {
+                                <div class="rounded-3 bg-secondary text-white d-flex align-items-center justify-content-center shadow-sm border" style="width: 80px; height: 60px;">
+                                    <i class="bi bi-book-half" style="font-size: 1.5rem;"></i>
+                                </div>
+                            }
+                            <div>
+                                <h5 class="fw-bold text-dark mb-1">@Model.Name</h5>
+                                <span class="badge bg-info text-white rounded-pill px-2 py-0.5 small mb-1.5 d-inline-block">
+                                    @(Model.Category?.Name ?? "N/A")
+                                </span>
+                                <div class="text-muted small">
+                                    Giảng viên: <strong class="text-dark">@Model.Lecturer</strong> | Tín chỉ: <strong class="text-dark">@Model.Credits</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delete Form -->
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2.5 rounded-3 fw-bold border-2 flex-grow-1">
+                                Hủy bỏ (Quay lại)
+                            </a>
+                            <button type="submit" class="btn btn-danger px-4 py-2.5 rounded-3 fw-bold shadow-sm flex-grow-1">
+                                <i class="bi bi-trash-fill me-2"></i>Xác nhận xóa
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
